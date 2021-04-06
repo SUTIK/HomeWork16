@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    int idProd = readProduct().size();
+
+    static int idProd ;
     public static void main(String[] args) {
-        int idProd=0;
         try {
             while (true){
                 Scanner sc = new Scanner(System.in);
@@ -35,15 +35,12 @@ public class Main {
                         }else if (i1==2){
                             //добавляем продукт
                             addProduct();
-
-
-
-
-
                         }
-                         else if (i1==3){}
-                         else if(i1==4){break; }
-                         else System.out.println("Неверная комманда");
+                         else if (i1 != 3) {
+                            if (i1 == 4) {
+                                break;
+                            } else System.out.println("Неверная комманда");
+                        }
 
                     }
                 }else if (i==2){
@@ -55,7 +52,7 @@ public class Main {
                         System.out.println("4 - Выход");
                         int i1 = sc.nextInt();
                         if (i1==1){
-                            System.out.println(readOrder());;
+                            System.out.println(readOrder());
                         }else if (i1==2){}
                         else if (i1==3){}
                         else if(i1==4){break; }
@@ -88,11 +85,11 @@ public class Main {
                 String[] s = line.split("/");
                 Product prod1 = new Product(Integer.parseInt(s[0]), s[1], getDate(s[2]));
                 productList.add(prod1);
-
+                return productList;
             }
 
-        } catch (Exception ex) {
-        }
+        } catch (Exception ex) { ex.getMessage(); }
+
         return productList;
     }
 
@@ -108,11 +105,10 @@ public class Main {
                 String[] s = line.split("/");
                 Order order1 =new Order(Integer.parseInt(s[0]),getProductList(s[1]),getDate(s[2]));
                 orderList.add(order1);
-
             }
 
         }
-        catch (Exception ex){
+        catch (Exception ex){ ex.getMessage();
         }
         return orderList;
     }
@@ -130,15 +126,17 @@ public class Main {
     }
 
     private static void addProduct(){
-
-       String newProduct;
-       int id = readProduct().size()+1;
+        List<Product> l = new ArrayList<>(readProduct());
+        for (Product i:l) {
+             idProd = i.getId();
+        }
+       int id= idProd+1;
        System.out.println("Введите название продукта");
         Scanner scanner = new Scanner(System.in);
         String nameProd = scanner.nextLine();
         System.out.println("Введите дату в фотрмате 21-03-2021");
         String dateProd=scanner.nextLine();
-        newProduct = "\n"+id+"/"+nameProd+"/"+dateProd;
+        String newProduct = "\n"+id+"/"+nameProd+"/"+dateProd;
         try{
             try (BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\Sergey\\IdeaProjects\\HomeWork16\\src\\eu\\senla\\sutko\\task16\\product.txt", true))) {
                 bw.write(newProduct);
